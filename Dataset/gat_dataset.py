@@ -2,7 +2,7 @@ import torch
 import json
 from torch.utils.data import Dataset
 
-class GraphDataset(Dataset):
+class GATDataset(Dataset):
     def __init__(self, data_path):
         """
         Initialize the dataset.
@@ -19,14 +19,19 @@ class GraphDataset(Dataset):
 
     def __getitem__(self, idx):
         """
-        Retrieve an item from the dataset.
+        Retrieve an item for GATEncoder.
         Args:
             idx (int): Index of the data sample.
         Returns:
-            dict: Sample containing node features, edge list, and edge types.
+            dict: Dictionary with node features and edge list.
         """
         entry = self.data[idx]
+
         node_features = torch.tensor(entry["node_features"], dtype=torch.float32)
         edge_list = torch.tensor(entry["edge_list"], dtype=torch.long).t().contiguous()
-        # edge_types = torch.tensor(entry.get("edge_types", []), dtype=torch.long)
-        return {"node_features": node_features, "edge_list": edge_list}
+        
+        return {
+            "node_features": node_features,
+            "edge_list": edge_list
+        }
+
